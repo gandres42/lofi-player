@@ -6,6 +6,9 @@ platforms = ["linux-64"]
 version = "0.1.0"
 
 [tasks]
+build = { cmd = "go build -o lofi-player .", description = "Build the lofi-player binary" }
+player = { cmd = "./lofi-player", depends-on = ["build"], description = "Build and launch the player" }
+test = { cmd = "go test ./...", description = "Run the test suite" }
 
 [dependencies]
 go = ">=1.27.1,<2"
