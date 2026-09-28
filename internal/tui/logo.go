@@ -1,7 +1,7 @@
 package tui
 
 // logoLines is the static ASCII art for the "lofi" logo rendered
-// next to the now-playing card. The Nerd Font music note from the
+// next to the now-playing card. The music note from the
 // frame title is mirrored as a prefix on the middle row, so the
 // logo reads as a callback to the brand element in the top border.
 // The "i" uses a middle dot to match the lowercase reading of the

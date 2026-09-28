@@ -36,7 +36,7 @@ func StatusLine(themeName, station, volPercent string, volume int) string {
 	}
 
 	return fmt.Sprintf("%s %s  %s  %s",
-		s.AppTitle.Render("♪"),
+		s.AppTitle.Render(iconLogo),
 		s.StationName.Render(station),
 		bar,
 		s.VolPercent.Render(volPercent),

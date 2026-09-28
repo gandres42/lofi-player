@@ -124,7 +124,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		return m.handleKey(msg)
 
 	case MetadataChangedMsg:
-		m.currentTrack = Track{Title: msg.Title, Artist: msg.Artist}
+		m.currentTrack = Track{Title: cleanText(msg.Title), Artist: cleanText(msg.Artist)}
 		return m, waitForEvent(m.player)
 
 	case PlaybackStartedMsg:

@@ -10,7 +10,7 @@ import (
 // embeds an optional title on the left and an optional label on the
 // right. The result reads like a desktop window's title bar:
 //
-//	╭─ ♪ lofi.player ──────────────────  16:57 ─╮
+//	╭─ ♫ lofi.player ──────────────────  16:57 ─╮
 //	│                                            │
 //	│  ● Lofi Girl 24/7                          │
 //	│  ...                                       │

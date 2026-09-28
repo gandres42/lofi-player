@@ -156,7 +156,7 @@ func (m mixerModel) renderRow(ch audio.AmbientChannel, v int, disabled, selected
 	value := fmt.Sprintf("%3d", v)
 
 	// Selected row uses Cursor's color but explicitly drops Bold so the
-	// label doesn't out-weigh the small Nerd Font icon next to it.
+	// label doesn't out-weigh the small icon next to it.
 	switch {
 	case selected:
 		labelStyle := styles.Cursor.Bold(false)

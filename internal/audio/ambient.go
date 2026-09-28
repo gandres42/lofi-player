@@ -25,16 +25,17 @@ type AmbientChannel struct {
 	asset string
 }
 
-// Icons are Nerd Font Material Design glyphs — thin, detailed, and
-// consistent in weight with the music-note logo and the stations list
-// glyph used elsewhere in the UI. Wrapped in styles.AppTitle so they
-// pick up the brand Primary tone.
+// Icons are single-cell, non-emoji Unicode glyphs so they render with
+// any standard monospace font (no Nerd Font required). Emoji are
+// avoided because terminals disagree on their width. "↯" is taken by
+// the buffer-health hint, so thunder uses the koppa "ϟ" instead.
+// Wrapped in styles.AppTitle so they pick up the brand Primary tone.
 var ambientChannels = []AmbientChannel{
-	{ID: "rain", Label: "rain", Icon: "󰖖", asset: "rain.opus"},        // mdi-weather-pouring
-	{ID: "fire", Label: "fire", Icon: "󰈸", asset: "fire.opus"},        // mdi-fire
-	{ID: "white_noise", Label: "white noise", Icon: "󰥛", asset: "white_noise.opus"}, // mdi-sine-wave
-	{ID: "cafe", Label: "cafe", Icon: "󰅶", asset: "cafe.opus"},        // mdi-coffee
-	{ID: "thunder", Label: "thunder", Icon: "󰙾", asset: "thunder.opus"}, // mdi-weather-lightning-rainy
+	{ID: "rain", Label: "rain", Icon: "⁞", asset: "rain.opus"},                      // falling drops
+	{ID: "fire", Label: "fire", Icon: "▲", asset: "fire.opus"},                      // alchemical fire
+	{ID: "white_noise", Label: "white noise", Icon: "∿", asset: "white_noise.opus"}, // sine wave
+	{ID: "cafe", Label: "cafe", Icon: "⌂", asset: "cafe.opus"},                      // indoors
+	{ID: "thunder", Label: "thunder", Icon: "ϟ", asset: "thunder.opus"},             // lightning bolt
 }
 
 type runtimeChannel struct {

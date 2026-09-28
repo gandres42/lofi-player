@@ -5,3 +5,6 @@
 .worktrees/
 /dist/
 /sounds/
+# pixi environments
+.pixi/*
+!.pixi/config.toml

@@ -30,13 +30,12 @@ const (
 	logoMinGutter = 2
 )
 
-// Nerd Font icons (FontAwesome subset, PUA range U+F000–U+F8FF).
-// Terminals without a Nerd Font will render these as tofu boxes;
-// the trade-off is documented in the README.
+// Icons are plain Unicode (no Nerd Font / Private Use Area glyphs)
+// so they render with any standard monospace font. The volume label
+// is text because there's no non-emoji speaker glyph.
 const (
-	iconLogo     = "" //  music
-	iconVolume   = "󰕿" //  volume-high (Material Design)
-	iconStations = "" //  list
+	iconLogo   = "♫"
+	iconVolume = "vol"
 )
 
 const (
@@ -57,8 +56,10 @@ const appFrameWidth = 120
 // The whole app is wrapped in a rounded frame whose top border
 // embeds the brand and the clock (title-on-the-left, label-on-the-
 // right), so the header isn't a separate row inside the frame. On
-// wide terminals the frame is centered horizontally at
-// appFrameWidth; on narrower ones it shrinks to fit.
+// wide terminals the frame is capped at appFrameWidth; on narrower
+// ones it shrinks to fit. The frame is centered both horizontally
+// and vertically; when it's taller than the terminal it's left
+// top-aligned as before.
 func (m Model) View() string {
 	if m.width == 0 {
 		return ""
@@ -114,7 +115,17 @@ func (m Model) View() string {
 		m.styles.AppTitle,
 	)
 
-	return lipgloss.PlaceHorizontal(m.width, lipgloss.Center, framed)
+	placed := lipgloss.Place(m.width, m.height, lipgloss.Center, lipgloss.Center, framed)
+
+	// Drop the right-hand padding Place adds. A line that fills the
+	// terminal exactly wraps if any glyph renders even one cell wider
+	// than lipgloss measured (see cleanText); without the padding the
+	// frame's right margin absorbs that slack instead.
+	lines := strings.Split(placed, "\n")
+	for i, line := range lines {
+		lines[i] = strings.TrimRight(line, " ")
+	}
+	return strings.Join(lines, "\n")
 }
 
 // viewMixer overlays the ambient-mixer modal on top of whichever layout
@@ -141,7 +152,7 @@ func (m Model) viewShareStation() string {
 	backdrop := m.modalBackdrop()
 	name := "station"
 	if m.cursor >= 0 && m.cursor < len(m.cfg.Stations) {
-		name = m.cfg.Stations[m.cursor].Name
+		name = cleanText(m.cfg.Stations[m.cursor].Name)
 	}
 
 	lines := strings.Split(strings.TrimRight(m.shareSnippet, "\n"), "\n")
@@ -191,7 +202,7 @@ func (m Model) viewImportStations() string {
 		if i > 0 {
 			preview.WriteByte('\n')
 		}
-		preview.WriteString(m.styles.StationName.Render(m.importStations[i].Name))
+		preview.WriteString(m.styles.StationName.Render(cleanText(m.importStations[i].Name)))
 		preview.WriteString(m.styles.HelpDesc.Render("  "))
 		preview.WriteString(m.styles.Hint.Render(m.importStations[i].URL))
 	}
@@ -376,7 +387,7 @@ func (m Model) viewConfirmDelete() string {
 
 	name := "?"
 	if m.pendingDeleteIdx >= 0 && m.pendingDeleteIdx < len(m.cfg.Stations) {
-		name = m.cfg.Stations[m.pendingDeleteIdx].Name
+		name = cleanText(m.cfg.Stations[m.pendingDeleteIdx].Name)
 	}
 
 	prompt := m.styles.HelpDesc.Render("delete ") +
@@ -510,7 +521,7 @@ func (m Model) renderNowPlaying() string {
 	}
 
 	station := m.cfg.Stations[m.playingIdx]
-	stationLine := leftPad + m.statusBlock() + "  " + m.styles.StationName.Render(station.Name)
+	stationLine := leftPad + m.statusBlock() + "  " + m.styles.StationName.Render(cleanText(station.Name))
 	if icon := m.stationKindIcon(station); icon != "" {
 		stationLine += "  " + icon
 	}
@@ -673,9 +684,8 @@ func renderBufferBar(sec float64, s Styles) string {
 // the user always see at a glance whether a station resolves through
 // the direct stream path or through mpv's ytdl_hook.
 //
-// Text rather than a Nerd Font glyph: the FA youtube codepoint
-// (U+F167) doesn't render reliably across Nerd Font variants, and a
-// plain word reads unambiguously on any terminal.
+// Text rather than a glyph: there's no standard Unicode symbol for
+// YouTube, and a plain word reads unambiguously on any terminal.
 func (m Model) stationKindIcon(s config.Station) string {
 	kind := s.EffectiveKind()
 	if kind == "" {
@@ -999,7 +1009,7 @@ func (m Model) renderStations() string {
 		if nameBudget < 8 {
 			nameBudget = 8
 		}
-		displayName := truncateRunes(s.Name, nameBudget)
+		displayName := truncateRunes(cleanText(s.Name), nameBudget)
 
 		var name string
 		switch {
@@ -1068,7 +1078,7 @@ func (m Model) renderToast() string {
 	if label := t.label(); label != "" {
 		out += t.labelStyle(m.styles).Render(label)
 	}
-	return out + m.styles.HelpDesc.Render(t.Message)
+	return out + m.styles.HelpDesc.Render(cleanText(t.Message))
 }
 
 func (m Model) renderFullHelp() string {
@@ -1130,7 +1140,7 @@ func interleave(ss []string, sep string) []string {
 	return out
 }
 
-// renderAmbientIndicator returns a compact "· 🌧️🔥" tag composed of
+// renderAmbientIndicator returns a compact "· ⁞ ▲" tag composed of
 // active-channel icons in canonical order, separated from the station
 // kind label by a divider in muted tone. Returns empty when no
 // ambient channel is active so the station line stays uncluttered.

@@ -1,6 +1,9 @@
 # lofi-player
-
-**English** · [Русский](README.ru.md)
+**Notice:** I don't know Go, I used AI to make the following changes:
+- Vertically center UI in terminal, in addition to previous horizontal centering
+- Fix title rendering of some emojis
+- Switch nerd-font icons for unicode versions or text placeholders
+****
 
 A keyboard-driven TUI for lofi, chillhop and ambient internet radio —
 built to live in a tmux pane while you work.
@@ -104,15 +107,13 @@ to install them separately.
 |---|---|---|
 | `mpv` | all playback | `brew install mpv` · `apt install mpv` · `pacman -S mpv` · `dnf install mpv` |
 | `yt-dlp` | YouTube stations only | `brew install yt-dlp` · `pip install yt-dlp` |
-| Nerd Font | section/volume/mixer icons | [JetBrains Mono](https://github.com/ryanoasis/nerd-fonts/releases) or [FiraCode](https://github.com/ryanoasis/nerd-fonts/releases) Nerd Font |
 
 If `mpv` isn't on `$PATH`, the app prints a styled "can't start" card
 with platform-specific install commands and exits — there's nothing
 to play without the engine. If `yt-dlp` is missing but your config
 has YouTube stations, the app starts normally with a warning toast,
 marks YouTube rows as `unavailable`, and refuses to autoplay them;
-direct streams keep working. Without a Nerd Font, the icons render
-as tofu boxes; the rest of the UI keeps working.
+direct streams keep working.
 
 ## Quick start
 
