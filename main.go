@@ -116,6 +116,7 @@ func run() error {
 		InitialVolume:        effectiveVolume,
 		BufferSeconds:        cfg.BufferSeconds,
 		InitialBufferSeconds: cfg.InitialBufferSeconds,
+		CookiesFromBrowser:   cfg.CookiesFromBrowser,
 	})
 	if err != nil {
 		return fmt.Errorf("starting mpv: %w", err)

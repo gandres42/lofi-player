@@ -112,6 +112,8 @@ type Options struct {
 	// Values above 10 are clamped because many live-radio streams never
 	// build a deeper initial cache and would appear stuck.
 	InitialBufferSeconds int
+	// CookiesFromBrowser is passed to yt-dlp as --cookies-from-browser.
+	CookiesFromBrowser string
 }
 
 // Player owns an mpv subprocess and a JSON-IPC connection to it,
@@ -160,7 +162,11 @@ func mainMPVArgs(socketPath string, opts Options) []string {
 	args = append(args, networkCacheArgs(opts)...)
 	// yt-dlp needs a JS runtime + solver script for YouTube's n challenge;
 	// its default runtime is deno only, so allow node (already common).
-	args = append(args, "--ytdl-raw-options=js-runtimes=node,remote-components=ejs:github")
+	ytdl := "js-runtimes=node,remote-components=ejs:github"
+	if opts.CookiesFromBrowser != "" {
+		ytdl += ",cookies-from-browser=" + opts.CookiesFromBrowser
+	}
+	args = append(args, "--ytdl-raw-options="+ytdl)
 	if runtime.GOOS == "darwin" {
 		args = append(args,
 			"--input-media-keys=yes",

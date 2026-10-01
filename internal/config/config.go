@@ -38,6 +38,9 @@ type Config struct {
 	// InitialBufferSeconds makes mpv wait for this many seconds of cache
 	// before starting/resuming after a cache stall. 0 starts immediately.
 	InitialBufferSeconds int `yaml:"initial_buffer_seconds"`
+	// CookiesFromBrowser, if set (e.g. "firefox", "chrome:Profile 1"), is
+	// passed to yt-dlp as --cookies-from-browser for YouTube stations.
+	CookiesFromBrowser string `yaml:"cookies_from_browser,omitempty"`
 	// Stations is the user's list of internet-radio stations.
 	Stations []Station `yaml:"stations"`
 }

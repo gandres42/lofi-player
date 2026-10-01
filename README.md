@@ -3,6 +3,7 @@
 - Vertically center UI in terminal, in addition to previous horizontal centering
 - Fix title rendering of some emojis
 - Switch nerd-font icons for unicode versions or text placeholders
+- Start mpv with `--ytdl-raw-options=js-runtimes=node,remote-components=ejs:github` so yt-dlp can solve YouTube's JS challenge and add `cookies_from_browser: firefox` (or `chrome`, etc.) to your config so YouTube's bot check passes (needs `node` on `$PATH`; yt-dlp downloads its solver script from GitHub on first use)
 ****
 
 A keyboard-driven TUI for lofi, chillhop and ambient internet radio —
@@ -115,14 +116,6 @@ to play without the engine. If `yt-dlp` is missing but your config
 has YouTube stations, the app starts normally with a warning toast,
 marks YouTube rows as `unavailable`, and refuses to autoplay them;
 direct streams keep working.
-
-YouTube requires yt-dlp to run a JS challenge solver. lofi-player starts
-mpv with `--ytdl-raw-options=js-runtimes=node,remote-components=ejs:github`,
-so `node` must be on `$PATH` and yt-dlp downloads its solver script from
-GitHub on first use. If you use `deno` instead, or want to avoid the
-download (install `yt-dlp-ejs`), edit that option in
-`internal/audio/player.go`. Without a working runtime, playback fails
-with `playback ended with error`.
 
 ## Quick start
 
