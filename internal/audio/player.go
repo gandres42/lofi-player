@@ -158,6 +158,9 @@ func mainMPVArgs(socketPath string, opts Options) []string {
 		"--input-ipc-server=" + socketPath,
 	}
 	args = append(args, networkCacheArgs(opts)...)
+	// yt-dlp needs a JS runtime + solver script for YouTube's n challenge;
+	// its default runtime is deno only, so allow node (already common).
+	args = append(args, "--ytdl-raw-options=js-runtimes=node,remote-components=ejs:github")
 	if runtime.GOOS == "darwin" {
 		args = append(args,
 			"--input-media-keys=yes",

@@ -107,6 +107,7 @@ to install them separately.
 |---|---|---|
 | `mpv` | all playback | `brew install mpv` · `apt install mpv` · `pacman -S mpv` · `dnf install mpv` |
 | `yt-dlp` | YouTube stations only | `brew install yt-dlp` · `pip install yt-dlp` |
+| `node` (or `deno`) | YouTube stations only | `brew install node` · `dnf install nodejs` · `apt install nodejs` |
 
 If `mpv` isn't on `$PATH`, the app prints a styled "can't start" card
 with platform-specific install commands and exits — there's nothing
@@ -114,6 +115,14 @@ to play without the engine. If `yt-dlp` is missing but your config
 has YouTube stations, the app starts normally with a warning toast,
 marks YouTube rows as `unavailable`, and refuses to autoplay them;
 direct streams keep working.
+
+YouTube requires yt-dlp to run a JS challenge solver. lofi-player starts
+mpv with `--ytdl-raw-options=js-runtimes=node,remote-components=ejs:github`,
+so `node` must be on `$PATH` and yt-dlp downloads its solver script from
+GitHub on first use. If you use `deno` instead, or want to avoid the
+download (install `yt-dlp-ejs`), edit that option in
+`internal/audio/player.go`. Without a working runtime, playback fails
+with `playback ended with error`.
 
 ## Quick start
 
