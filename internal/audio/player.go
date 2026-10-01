@@ -114,6 +114,9 @@ type Options struct {
 	InitialBufferSeconds int
 	// CookiesFromBrowser is passed to yt-dlp as --cookies-from-browser.
 	CookiesFromBrowser string
+	// YtdlJSRuntime is passed to yt-dlp as --js-runtimes, together with
+	// --remote-components ejs:github for the challenge solver script.
+	YtdlJSRuntime string
 }
 
 // Player owns an mpv subprocess and a JSON-IPC connection to it,
@@ -162,11 +165,16 @@ func mainMPVArgs(socketPath string, opts Options) []string {
 	args = append(args, networkCacheArgs(opts)...)
 	// yt-dlp needs a JS runtime + solver script for YouTube's n challenge;
 	// its default runtime is deno only, so allow node (already common).
-	ytdl := "js-runtimes=node,remote-components=ejs:github"
-	if opts.CookiesFromBrowser != "" {
-		ytdl += ",cookies-from-browser=" + opts.CookiesFromBrowser
+	var ytdl []string
+	if opts.YtdlJSRuntime != "" {
+		ytdl = append(ytdl, "js-runtimes="+opts.YtdlJSRuntime, "remote-components=ejs:github")
 	}
-	args = append(args, "--ytdl-raw-options="+ytdl)
+	if opts.CookiesFromBrowser != "" {
+		ytdl = append(ytdl, "cookies-from-browser="+opts.CookiesFromBrowser)
+	}
+	if len(ytdl) > 0 {
+		args = append(args, "--ytdl-raw-options="+strings.Join(ytdl, ","))
+	}
 	if runtime.GOOS == "darwin" {
 		args = append(args,
 			"--input-media-keys=yes",

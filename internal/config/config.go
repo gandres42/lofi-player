@@ -41,6 +41,10 @@ type Config struct {
 	// CookiesFromBrowser, if set (e.g. "firefox", "chrome:Profile 1"), is
 	// passed to yt-dlp as --cookies-from-browser for YouTube stations.
 	CookiesFromBrowser string `yaml:"cookies_from_browser,omitempty"`
+	// YtdlJSRuntime, if set (e.g. "node", "deno"), lets yt-dlp use that JS
+	// runtime to solve YouTube's JS challenge. Also enables downloading
+	// yt-dlp's solver script from GitHub on first use.
+	YtdlJSRuntime string `yaml:"ytdl_js_runtime,omitempty"`
 	// Stations is the user's list of internet-radio stations.
 	Stations []Station `yaml:"stations"`
 }

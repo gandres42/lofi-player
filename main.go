@@ -117,6 +117,7 @@ func run() error {
 		BufferSeconds:        cfg.BufferSeconds,
 		InitialBufferSeconds: cfg.InitialBufferSeconds,
 		CookiesFromBrowser:   cfg.CookiesFromBrowser,
+		YtdlJSRuntime:        cfg.YtdlJSRuntime,
 	})
 	if err != nil {
 		return fmt.Errorf("starting mpv: %w", err)

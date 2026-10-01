@@ -3,7 +3,7 @@
 - Vertically center UI in terminal, in addition to previous horizontal centering
 - Fix title rendering of some emojis
 - Switch nerd-font icons for unicode versions or text placeholders
-- Start mpv with `--ytdl-raw-options=js-runtimes=node,remote-components=ejs:github` so yt-dlp can solve YouTube's JS challenge and add `cookies_from_browser: firefox` (or `chrome`, etc.) to your config so YouTube's bot check passes (needs `node` on `$PATH`; yt-dlp downloads its solver script from GitHub on first use)
+- Fix YouTube playback with two opt-in config options: `cookies_from_browser: firefox` (or `chrome`, etc.) passes your browser cookies to yt-dlp for YouTube's bot check, and `ytdl_js_runtime: node` (or `deno`) lets yt-dlp solve YouTube's JS challenge (needs that runtime on `$PATH`; yt-dlp downloads its solver script from GitHub on first use)
 ****
 
 A keyboard-driven TUI for lofi, chillhop and ambient internet radio —
